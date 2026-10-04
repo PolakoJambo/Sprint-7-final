@@ -61,7 +61,7 @@ func TestCafeCount(t *testing.T) {
 		{count: 0, want: 0},
 		{count: 1, want: 1},
 		{count: 2, want: 2},
-		{count: 100, want: len(cafeList["moscow"])},
+		{count: 100, want: min(len(cafeList["moscow"]), 100)},
 	}
 
 	for _, tc := range requests {
@@ -83,6 +83,7 @@ func TestCafeCount(t *testing.T) {
 		}
 
 		assert.Equal(t, tc.want, got)
+
 	}
 }
 
@@ -117,5 +118,12 @@ func TestCafeSearch(t *testing.T) {
 		}
 
 		assert.Equal(t, tc.wantCount, got)
+
+		if body != "" {
+			cafes := strings.Split(body, ",")
+			for _, cafe := range cafes {
+				assert.Contains(t, strings.ToLower(cafe), strings.ToLower(tc.search))
+			}
+		}
 	}
 }
